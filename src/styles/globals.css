@@ -1,0 +1,194 @@
+/* ════════════════════════════════════════════════════════════
+   Presentation shell — stage, scaling, base motion utilities
+   ════════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: #050b1c;
+  color: #fff;
+}
+
+button {
+  font: inherit;
+}
+
+.presentation-app {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Inter, sans-serif;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(182, 255, 59, 0.06), transparent 34%),
+    radial-gradient(circle at 0% 100%, rgba(24, 51, 118, 0.35), transparent 38%),
+    linear-gradient(180deg, #050b1c 0%, #0a1228 100%);
+}
+
+.presentation-main {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.presentation-stage-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.presentation-stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #050b1c;
+}
+
+.stage-enter {
+  animation: stageFade 460ms ease-out both;
+}
+
+.slide-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.slide-root {
+  isolation: isolate;
+}
+
+/* ─── motion utilities ─── */
+.motion-rise {
+  animation: riseIn 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.fade-up {
+  animation: fadeUp 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.fade-in {
+  animation: stageFade 600ms ease-out both;
+}
+.accent-line {
+  animation: lineGrow 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: left center;
+}
+.kenburns {
+  animation: kenBurns 22s ease-in-out infinite alternate;
+}
+
+@keyframes stageFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes lineGrow {
+  from {
+    opacity: 0;
+    transform: scaleX(0.15);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+@keyframes kenBurns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.12) translate(-1.5%, -1%);
+  }
+}
+@keyframes accentPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(182, 255, 59, 0);
+  }
+  50% {
+    box-shadow: 0 0 26px rgba(182, 255, 59, 0.45);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── static export: final state, no motion ─── */
+.pdf-export-root *,
+.pdf-export-root *::before,
+.pdf-export-root *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media print {
+  @page {
+    size: 16in 9in;
+    margin: 0;
+  }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  html,
+  body,
+  #root {
+    width: 16in;
+    min-height: 9in;
+    background: transparent !important;
+  }
+  body {
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+  .pdf-slide-page {
+    width: 16in !important;
+    height: 9in !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
